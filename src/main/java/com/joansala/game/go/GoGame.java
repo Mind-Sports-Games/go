@@ -333,6 +333,22 @@ public class GoGame extends BaseGame {
         return scores[BLACK] - (scores[WHITE] + komi);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public int blackScore() {
+        final int[] scores = computeScores();
+        return scores[BLACK];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int whiteScore() {
+        final int[] scores = computeScores();
+        return scores[WHITE] + komi;
+    }
+
 
     /**
      * {@inheritDoc}
