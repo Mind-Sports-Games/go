@@ -78,27 +78,43 @@ public class GoGame extends BaseGame {
     /** Compensation score for white */
     private int komi;
 
+    /** the go game size 9,13 or 19 */
+    private int gameSize;
+
+    /** Player fortfeits its turn */
+    private int FORFEIT_MOVE;
+
+    /**
+     * Instantiate a new game on the start state and game size.
+     */
+    public GoGame() {
+        this(DEFAULT_CAPACITY, DEFAULT_GAME_SIZE);
+    }
 
     /**
      * Instantiate a new game on the start state.
+     * 
+     * @param gameSize      Board size to play on, supports 9,13,19
      */
-    public GoGame() {
-        this(DEFAULT_CAPACITY);
+    public GoGame(int gameSize) {
+        this(DEFAULT_CAPACITY, gameSize);
     }
-
 
     /**
      * Instantiate a new game on the start state.
      *
      * @param capacity      Initial capacity
+     * @param gameSize      Board size to play on, supports 9,13,19
      */
-    public GoGame(int capacity) {
+    public GoGame(int capacity, int gameSize) {
         super(capacity);
+        gameSize = gameSize;
+        FORFEIT_MOVE = gameSize * gameSize;
         cursors = new int[capacity];
         kopoints = new int[capacity];
         hashes = new long[capacity];
         states = new long[capacity * BITSET_SIZE << 1];
-        setBoard(new GoBoard());
+        setBoard(new GoBoard(gameSize));
     }
 
 
@@ -184,7 +200,7 @@ public class GoGame extends BaseGame {
      */
     @Override
     public GoBoard toBoard() {
-        return new GoBoard(state, turn);
+        return new GoBoard(state, turn, board.gameSize());
     }
 
 
@@ -262,7 +278,7 @@ public class GoGame extends BaseGame {
             return false;
         }
 
-        for (int neighbor: Point.attacks(point)) {
+        for (int neighbor: Point.attacks(gameSize, point)) {
             if (state[1 ^ color].contains(neighbor)) {
                 if (chain(1 ^ color, neighbor).isInAtari()) {
                     return false;
@@ -450,7 +466,7 @@ public class GoGame extends BaseGame {
 
         int captures = 0;
 
-        for (int point : Point.attacks(move)) {
+        for (int point : Point.attacks(gameSize, move)) {
             if (state[rival.color].contains(point)) {
                 Chain chain = chain(rival.color, point);
 
@@ -513,7 +529,7 @@ public class GoGame extends BaseGame {
     private void chain(Chain chain, int color, int point) {
         chain.stones.insert(point);
 
-        for (int neighbor : Point.attacks(point)) {
+        for (int neighbor : Point.attacks(gameSize, point)) {
             if (chain.stones.contains(neighbor) == false) {
                 if (state[color].contains(neighbor)) {
                     chain(chain, color, neighbor);
@@ -571,7 +587,7 @@ public class GoGame extends BaseGame {
     private void areas(Bitset areas, int[] counts, int point) {
         areas.insert(point);
 
-        for (int neighbor : Point.attacks(point)) {
+        for (int neighbor : Point.attacks(gameSize, point)) {
             if (areas.contains(neighbor) == false) {
                 if (state[BLACK].contains(neighbor)) {
                     counts[BLACK]++;
