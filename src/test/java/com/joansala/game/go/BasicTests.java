@@ -1,7 +1,7 @@
 package com.joansala.game.go;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-//import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.*;
 import com.joansala.game.go.GoGame;
 import com.joansala.game.go.GoBoard;
@@ -66,6 +66,7 @@ class BasicTests {
             nextMove = game.nextMove();
         }
         assertEquals(moveCount, 19*19 + 1);
+        //assertTrue(game.isForfeit(19*19)); //private method
     }
 
     @DisplayName("numer of moves in starting 13x13 go game")
@@ -81,6 +82,7 @@ class BasicTests {
             nextMove = game.nextMove();
         }
         assertEquals(moveCount, 13*13 + 1);
+        //assertTrue(game.isForfeit(13*13)); //private method
     }
 
     @DisplayName("numer of moves in starting 9x9 go game")
@@ -96,7 +98,45 @@ class BasicTests {
             nextMove = game.nextMove();
         }
         assertEquals(moveCount, 9*9 + 1);
+        //assertTrue(game.isForfeit(9*9)); //private method
     }
+
+    @DisplayName("algebra moves in go 9x9 game")
+    @Test
+    public void algebraMovesTest9(){
+        GoGame game  = new GoGame(9);
+        GoBoard board = (GoBoard) game.getBoard();
+        int value = 35;
+        String coord = board.toCoordinates(value);
+        int move = board.toMove(coord);
+
+        assertEquals(value, move);
+    }
+
+    @DisplayName("algebra moves in go 13x13 game")
+    @Test
+    public void algebraMovesTest13(){
+        GoGame game  = new GoGame(13);
+        GoBoard board = (GoBoard) game.getBoard();
+        int value = 120;
+        String coord = board.toCoordinates(value);
+        int move = board.toMove(coord);
+
+        assertEquals(value, move);
+    }
+
+    @DisplayName("algebra moves in go 19x19 game")
+    @Test
+    public void algebraMovesTest19(){
+        GoGame game  = new GoGame(19);
+        GoBoard board = (GoBoard) game.getBoard();
+        int value = 135;
+        String coord = board.toCoordinates(value);
+        int move = board.toMove(coord);
+
+        assertEquals(value, move);
+    }
+
 
 
     

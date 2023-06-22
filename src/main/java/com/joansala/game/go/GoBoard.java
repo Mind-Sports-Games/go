@@ -52,11 +52,8 @@ public class GoBoard extends BaseBoard<Bitset[]> {
      * Initialize notation converters.
      */
     static {
-        bitset = new BitsetConverter(BITS);
-        algebraic = new CoordinateConverter(COORDINATES);
         fen = new DiagramConverter(PIECES);
     }
-
 
     /**
      * Creates a new board for the default start position and game size.
@@ -82,6 +79,19 @@ public class GoBoard extends BaseBoard<Bitset[]> {
     public GoBoard(Bitset[] position, int turn, int gameSize) {
         super(clone(position), turn);
         this.gameSize = gameSize;
+        switch(gameSize){
+            case 9:
+                algebraic = new CoordinateConverter(COORDINATES_9);
+                bitset = new BitsetConverter(BITS_9);
+                break;
+            case 13:
+                algebraic = new CoordinateConverter(COORDINATES_13);
+                bitset = new BitsetConverter(BITS_13);
+                break;
+            default:
+                algebraic = new CoordinateConverter(COORDINATES_19);
+                bitset = new BitsetConverter(BITS_19); 
+        }
     }
 
 
@@ -250,14 +260,13 @@ public class GoBoard extends BaseBoard<Bitset[]> {
      * @param symbols   Symbols array
      * @return          Symbols array
      */
-    private static Object[] replaceStars(String[] symbols) {
+    private static Object[] replaceStars(String[] symbols, int[] starPoints) {
         for (int i = 0; i < symbols.length; i++) {
             if (symbols[i].charAt(0) == DiagramConverter.EMPTY_SYMBOL) {
                 symbols[i] = Character.toString(EMPTY_SYMBOL);
             }
         }
-
-        for (int i : STAR_POINTS) {
+        for (int i : starPoints) {
             if (symbols[i].charAt(0) == EMPTY_SYMBOL) {
                 symbols[i] = Character.toString(STAR_SYMBOL);
             }
@@ -347,18 +356,22 @@ public class GoBoard extends BaseBoard<Bitset[]> {
     @Override
     public String toString() {
         String boardString;
+        int[] starPoints;
         if (this.gameSize == 9) {
             boardString = boardString9;
+            starPoints = STAR_POINTS_9;
         } else if (this.gameSize == 13){
             boardString = boardString13;
+            starPoints = STAR_POINTS_13;
         } else {
             boardString = boardString19;
+            starPoints = STAR_POINTS_19;
         }
 
         return String.format(boardString.
             replaceAll("(#)", "%1s").
             replace("%turn", toPlayerName(turn)),
-            replaceStars(toPieceSymbols(position))
+            replaceStars(toPieceSymbols(position), starPoints)
         );
     }
 }

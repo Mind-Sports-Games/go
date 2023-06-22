@@ -43,7 +43,7 @@ public class GoGame extends BaseGame {
     private static final int CAPACITY_INCREMENT = 128;
 
     /** Hash code generator */
-    private static final ZobristHash hasher = hashFunction();
+    private ZobristHash hasher;
 
     /** Start position and turn */
     private GoBoard board;
@@ -82,7 +82,7 @@ public class GoGame extends BaseGame {
     private int gameSize;
 
     /** Player fortfeits its turn */
-    private int FORFEIT_MOVE;
+    private int forfeitMove;
 
     /**
      * Instantiate a new game on the start state and game size.
@@ -109,7 +109,8 @@ public class GoGame extends BaseGame {
     public GoGame(int capacity, int gameSize) {
         super(capacity);
         gameSize = gameSize;
-        FORFEIT_MOVE = gameSize * gameSize;
+        forfeitMove = gameSize * gameSize;
+        hasher = hashFunction(gameSize * gameSize);
         cursors = new int[capacity];
         kopoints = new int[capacity];
         hashes = new long[capacity];
@@ -242,7 +243,7 @@ public class GoGame extends BaseGame {
      * Check if it is a forfeit move identifier.
      */
     private boolean isForfeit(int move) {
-        return move == FORFEIT_MOVE;
+        return move == forfeitMove;
     }
 
 
@@ -297,7 +298,7 @@ public class GoGame extends BaseGame {
      */
     private boolean isRepetition() {
         for (int n = index; n >= 0; n--) {
-            if (moves[n] != FORFEIT_MOVE) {
+            if (moves[n] != forfeitMove) {
                 if (hashes[n] == this.hash) {
                     return true;
                 }
@@ -322,7 +323,7 @@ public class GoGame extends BaseGame {
      */
     @Override
     public int toCentiPawns(int score) {
-        return BOARD_SIZE * (score / 10);
+        return gameSize * gameSize * (score / 10);
     }
 
 
@@ -435,7 +436,7 @@ public class GoGame extends BaseGame {
      */
     @Override
     public int nextMove() {
-        while (cursor < FORFEIT_MOVE) {
+        while (cursor < forfeitMove) {
             if (isLegal(++cursor)) {
                 return cursor;
             }
@@ -458,7 +459,7 @@ public class GoGame extends BaseGame {
 
         // Player forfeits the turn
 
-        if (move == FORFEIT_MOVE) {
+        if (move == forfeitMove) {
             return;
         }
 
@@ -555,8 +556,7 @@ public class GoGame extends BaseGame {
 
         scores[BLACK] = state[BLACK].count();
         scores[WHITE] = state[WHITE].count();
-
-        for (int point = 0; point < BOARD_SIZE; point++) {
+        for (int point = 0; point < (gameSize * gameSize); point++) {
             if (!areas.contains(point) && isEmptyPoint(point)) {
                 int[] counts = new int[2];
                 areas(areas, counts, point);
@@ -676,8 +676,8 @@ public class GoGame extends BaseGame {
     /**
      * Initialize the hash code generator.
      */
-    private static ZobristHash hashFunction() {
-        return new ZobristHash(RANDOM_SEED, PIECE_COUNT, BOARD_SIZE);
+    private static ZobristHash hashFunction(int boardSize) {
+        return new ZobristHash(RANDOM_SEED, PIECE_COUNT, boardSize);
     }
 
 

@@ -18,7 +18,6 @@ package com.joansala.game.go;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import com.joansala.engine.Game;
 import com.joansala.util.bits.Bitset;
 
@@ -32,21 +31,13 @@ final class Go {
     // Game logic constants
     // -------------------------------------------------------------------
 
-    /** Number of rows on the board */
-    static final int BOARD_RANKS = 19;
-
-    /** Number of columns on the board */
-    static final int BOARD_FILES = 19;
-
-    /** Number of intersections on the board */
-    static final int BOARD_SIZE = BOARD_FILES * BOARD_RANKS;
-
     /** Number of distinc stones */
     static final int PIECE_COUNT = 2;
 
     /** Number of words on each bitset */
     static final int BITSET_SIZE = 6;
 
+    /** Default game size, producing a square shape */
     static final int DEFAULT_GAME_SIZE = 19;
 
     // -------------------------------------------------------------------
@@ -95,19 +86,6 @@ final class Go {
         'X', 'O'
     };
 
-    // /** Get Indexed board cell names for game size */
-    // public String[] getCoordinates(int gameSize) {
-    //     String[] coordinates;
-    //     if (gameSize == 9) {
-    //         coordinates = COORDINATES_9;
-    //     } else if (gamesize == 13) {
-    //         coordinates = COORDINATES_13;
-    //     } else {
-    //         coordinates = COORDINATES_19;
-    //     }
-    //     return coordinates;
-    // };
-
     /** Indexed board cell names */
     static final String[] COORDINATES_9 = {
          "a1",  "b1",  "c1",  "d1",  "e1",  "f1",  "g1",  "h1",  "j1",
@@ -146,7 +124,7 @@ final class Go {
     };
 
     /** Indexed board cell names */
-    static final String[] COORDINATES = {
+    static final String[] COORDINATES_19 = {
          "a1",  "b1",  "c1",  "d1",  "e1",  "f1",  "g1",  "h1",  "j1",
          "k1",  "l1",  "m1",  "n1",  "o1",  "p1",  "q1",  "r1",  "s1",
          "t1",  "a2",  "b2",  "c2",  "d2",  "e2",  "f2",  "g2",  "h2",
@@ -227,7 +205,7 @@ final class Go {
     };
 
     /** Bit indices of the intersections */
-    static final int[] BITS = {
+    static final int[] BITS_19 = {
           0,   1,   2,   3,   4,   5,   6,   7,   8,
           9,  10,  11,  12,  13,  14,  15,  16,  17,
          18,  19,  20,  21,  22,  23,  24,  25,  26,
@@ -282,7 +260,7 @@ final class Go {
     };
 
     /** Star point intersection indices */
-    static final int[] STAR_POINTS = {
+    static final int[] STAR_POINTS_19 = {
         60, 66, 72, 174, 180, 186, 288, 294, 300
     };
 
