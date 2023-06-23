@@ -137,6 +137,26 @@ class BasicTests {
         assertEquals(value, move);
     }
 
+    @DisplayName("compute score counting areas")
+    @Test
+    public void computerScoreTest(){
+        String fen = "O1O1O1O1O1O1O1O1O1O/OOOOOOOOOOOOOOOOOOO/1XXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/X1X1X1X1X1X1X1X1X1X/XXXXXXXXXXXXXXXXXXX/X1X1X1X1X1X1X1X1X1X/XXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXX/19 b -";
+        GoGame game  = new GoGame(19);
+        GoBoard board = (GoBoard) game.getBoard();
+
+        int komi = 6;
+        GoBoard newBoard = board.toBoard(fen);
+        game.setBoard(newBoard);
+        game.setKomiScore(komi);
+        int whiteScore = game.whiteScore();
+        int blackScore = game.blackScore();
+        int gameScore = game.score();
+
+        assertEquals(blackScore, 322);
+        assertEquals(whiteScore, 44); 
+        assertEquals(gameScore, 278);
+    }
+
 
 
     
