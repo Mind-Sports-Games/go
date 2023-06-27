@@ -43,7 +43,7 @@ public class GoGame extends BaseGame {
     private static final int CAPACITY_INCREMENT = 128;
 
     /** Hash code generator */
-    private static final ZobristHash hasher = hashFunction();
+    private ZobristHash hasher;
 
     /** Start position and turn */
     private GoBoard board;
@@ -78,27 +78,44 @@ public class GoGame extends BaseGame {
     /** Compensation score for white */
     private int komi;
 
+    /** the go game size 9,13 or 19 */
+    private int gameSize;
+
+    /** Player fortfeits its turn */
+    private int forfeitMove;
+
+    /**
+     * Instantiate a new game on the start state and game size.
+     */
+    public GoGame() {
+        this(DEFAULT_CAPACITY, DEFAULT_GAME_SIZE);
+    }
 
     /**
      * Instantiate a new game on the start state.
+     * 
+     * @param gameSize      Board size to play on, supports 9,13,19
      */
-    public GoGame() {
-        this(DEFAULT_CAPACITY);
+    public GoGame(int gameSize) {
+        this(DEFAULT_CAPACITY, gameSize);
     }
-
 
     /**
      * Instantiate a new game on the start state.
      *
      * @param capacity      Initial capacity
+     * @param gameSize      Board size to play on, supports 9,13,19
      */
-    public GoGame(int capacity) {
+    public GoGame(int capacity, int gameSize) {
         super(capacity);
+        this.gameSize = gameSize;
+        this.forfeitMove = gameSize * gameSize;
+        this.hasher = hashFunction(gameSize * gameSize);
         cursors = new int[capacity];
         kopoints = new int[capacity];
         hashes = new long[capacity];
         states = new long[capacity * BITSET_SIZE << 1];
-        setBoard(new GoBoard());
+        setBoard(new GoBoard(gameSize));
     }
 
 
@@ -184,7 +201,7 @@ public class GoGame extends BaseGame {
      */
     @Override
     public GoBoard toBoard() {
-        return new GoBoard(state, turn);
+        return new GoBoard(state, turn, board.gameSize());
     }
 
 
@@ -226,7 +243,7 @@ public class GoGame extends BaseGame {
      * Check if it is a forfeit move identifier.
      */
     private boolean isForfeit(int move) {
-        return move == FORFEIT_MOVE;
+        return move == forfeitMove;
     }
 
 
@@ -262,7 +279,7 @@ public class GoGame extends BaseGame {
             return false;
         }
 
-        for (int neighbor: Point.attacks(point)) {
+        for (int neighbor: Point.attacks(this.gameSize, point)) {
             if (state[1 ^ color].contains(neighbor)) {
                 if (chain(1 ^ color, neighbor).isInAtari()) {
                     return false;
@@ -281,7 +298,7 @@ public class GoGame extends BaseGame {
      */
     private boolean isRepetition() {
         for (int n = index; n >= 0; n--) {
-            if (moves[n] != FORFEIT_MOVE) {
+            if (moves[n] != forfeitMove) {
                 if (hashes[n] == this.hash) {
                     return true;
                 }
@@ -306,7 +323,7 @@ public class GoGame extends BaseGame {
      */
     @Override
     public int toCentiPawns(int score) {
-        return BOARD_SIZE * (score / 10);
+        return this.gameSize * this.gameSize * (score / 10);
     }
 
 
@@ -419,7 +436,7 @@ public class GoGame extends BaseGame {
      */
     @Override
     public int nextMove() {
-        while (cursor < FORFEIT_MOVE) {
+        while (cursor < forfeitMove) {
             if (isLegal(++cursor)) {
                 return cursor;
             }
@@ -442,7 +459,7 @@ public class GoGame extends BaseGame {
 
         // Player forfeits the turn
 
-        if (move == FORFEIT_MOVE) {
+        if (move == forfeitMove) {
             return;
         }
 
@@ -450,7 +467,7 @@ public class GoGame extends BaseGame {
 
         int captures = 0;
 
-        for (int point : Point.attacks(move)) {
+        for (int point : Point.attacks(this.gameSize, move)) {
             if (state[rival.color].contains(point)) {
                 Chain chain = chain(rival.color, point);
 
@@ -513,7 +530,7 @@ public class GoGame extends BaseGame {
     private void chain(Chain chain, int color, int point) {
         chain.stones.insert(point);
 
-        for (int neighbor : Point.attacks(point)) {
+        for (int neighbor : Point.attacks(this.gameSize, point)) {
             if (chain.stones.contains(neighbor) == false) {
                 if (state[color].contains(neighbor)) {
                     chain(chain, color, neighbor);
@@ -539,8 +556,8 @@ public class GoGame extends BaseGame {
 
         scores[BLACK] = state[BLACK].count();
         scores[WHITE] = state[WHITE].count();
-
-        for (int point = 0; point < BOARD_SIZE; point++) {
+        int boardSize = this.gameSize * this.gameSize;
+        for (int point = 0; point < boardSize; point++) {
             if (!areas.contains(point) && isEmptyPoint(point)) {
                 int[] counts = new int[2];
                 areas(areas, counts, point);
@@ -571,7 +588,7 @@ public class GoGame extends BaseGame {
     private void areas(Bitset areas, int[] counts, int point) {
         areas.insert(point);
 
-        for (int neighbor : Point.attacks(point)) {
+        for (int neighbor : Point.attacks(this.gameSize, point)) {
             if (areas.contains(neighbor) == false) {
                 if (state[BLACK].contains(neighbor)) {
                     counts[BLACK]++;
@@ -660,8 +677,8 @@ public class GoGame extends BaseGame {
     /**
      * Initialize the hash code generator.
      */
-    private static ZobristHash hashFunction() {
-        return new ZobristHash(RANDOM_SEED, PIECE_COUNT, BOARD_SIZE);
+    private static ZobristHash hashFunction(int boardSize) {
+        return new ZobristHash(RANDOM_SEED, PIECE_COUNT, boardSize);
     }
 
 

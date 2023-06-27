@@ -39,8 +39,8 @@
   <!-- Project properties =============================================== -->
 
   <properties>
-    <revision>1.0.0-pstrat1.1</revision>
-    <maven.test.skip>true</maven.test.skip>
+    <revision>1.0.0-pstrat1.2</revision>
+    <maven.test.skip>false</maven.test.skip>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -126,6 +126,12 @@
       <groupId>com.joansala</groupId>
       <artifactId>samurai</artifactId>
       <version>${samurai.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.7.0-M1</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
