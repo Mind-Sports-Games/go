@@ -53,6 +53,19 @@ class BasicTests {
         assertEquals(9, value4);
     }
 
+    @DisplayName("toGoBoard from string test 2")
+    @Test
+    public void toGoBoardFromStringTest2(){
+        GoGame game  = new GoGame(19);
+        GoBoard board = (GoBoard) game.getBoard();
+        String b1 = "199/199/199/199/199/199/199/199/199/199/199/7X119/199/199/199/2O196/199/191X7/4X191O2 b -";
+        String effectiveB1 = "19/19/19/19/19/19/19/19/19/19/19/7X11/19/19/19/2O16/19/11X7/4X11O2 b -";
+        GoBoard board2 = board.toBoard(b1);
+        int value = board2.gameSize();
+        assertEquals(19, value);
+        assertEquals(board2.toDiagram(), effectiveB1);
+    }
+
     @DisplayName("numer of moves in starting 19x19 go game")
     @Test
     public void numberOfMovesTest19(){

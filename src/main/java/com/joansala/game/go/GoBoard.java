@@ -34,10 +34,10 @@ import static com.joansala.game.go.GoGame.*;
 public class GoBoard extends BaseBoard<Bitset[]> {
 
     /** Bitboard converter */
-    private static BitsetConverter bitset;
+    private BitsetConverter bitset;
 
     /** Algebraic coordinates converter */
-    private static CoordinateConverter algebraic;
+    private CoordinateConverter algebraic;
 
     /** Piece placement converter */
     private static DiagramConverter fen;
@@ -158,7 +158,6 @@ public class GoBoard extends BaseBoard<Bitset[]> {
     @Override
     public GoBoard toBoard(String notation) {
         String[] fields = notation.split(" ");
-
         Bitset[] position = toPosition(fen.toArray(fields[0]));
         int turn = toTurn(fields[1].charAt(0));
         int kopoint = toKoPoint(fields[2]);
@@ -240,7 +239,7 @@ public class GoBoard extends BaseBoard<Bitset[]> {
     /**
      * Converts a Ko target point to a coordinate.
      */
-    private static String toKoCoordinate(int point) {
+    private String toKoCoordinate(int point) {
         return point == -1 ? "-" : algebraic.toCoordinate(point);
     }
 
@@ -248,7 +247,7 @@ public class GoBoard extends BaseBoard<Bitset[]> {
     /**
      * Converts a coodinate to a Ko target point.
      */
-    private static int toKoPoint(String coordinate) {
+    private int toKoPoint(String coordinate) {
         return "-".equals(coordinate) ? -1 : algebraic.toIndex(coordinate);
     }
 
@@ -316,40 +315,40 @@ public class GoBoard extends BaseBoard<Bitset[]> {
         "============================================");
         
     private static String boardString13 = (
-        "=======( %turn to move )======%n" +
-            "   +-------------------------+%n" +
-            "13 | # # # # # # # # # # # # |%n" +
-            "12 | # # # # # # # # # # # # |%n" +
-            "11 | # # # # # # # # # # # # |%n" +
-            "10 | # # # # # # # # # # # # |%n" +
-            " 9 | # # # # # # # # # # # # |%n" +
-            " 8 | # # # # # # # # # # # # |%n" +
-            " 7 | # # # # # # # # # # # # |%n" +
-            " 6 | # # # # # # # # # # # # |%n" +
-            " 5 | # # # # # # # # # # # # |%n" +
-            " 4 | # # # # # # # # # # # # |%n" +
-            " 3 | # # # # # # # # # # # # |%n" +
-            " 2 | # # # # # # # # # # # # |%n" +
-            " 1 | # # # # # # # # # # # # |%n" +
-            "   +-------------------------+%n" +
-            "     a b c d e f g h j k l m %n" +
-            "==============================");
+        "===========( %turn to move )========%n" +
+            "   +---------------------------+%n" +
+            "13 | # # # # # # # # # # # # # |%n" +
+            "12 | # # # # # # # # # # # # # |%n" +
+            "11 | # # # # # # # # # # # # # |%n" +
+            "10 | # # # # # # # # # # # # # |%n" +
+            " 9 | # # # # # # # # # # # # # |%n" +
+            " 8 | # # # # # # # # # # # # # |%n" +
+            " 7 | # # # # # # # # # # # # # |%n" +
+            " 6 | # # # # # # # # # # # # # |%n" +
+            " 5 | # # # # # # # # # # # # # |%n" +
+            " 4 | # # # # # # # # # # # # # |%n" +
+            " 3 | # # # # # # # # # # # # # |%n" +
+            " 2 | # # # # # # # # # # # # # |%n" +
+            " 1 | # # # # # # # # # # # # # |%n" +
+            "   +---------------------------+%n" +
+            "     a b c d e f g h j k l m n %n" +
+            "================================");
 
     private static String boardString9 = (
-         "========( %turn to move )=====%n" +
-                "   +-----------------+%n" +
-                " 9 | # # # # # # # # |%n" +
-                " 8 | # # # # # # # # |%n" +
-                " 7 | # # # # # # # # |%n" +
-                " 6 | # # # # # # # # |%n" +
-                " 5 | # # # # # # # # |%n" +
-                " 4 | # # # # # # # # |%n" +
-                " 3 | # # # # # # # # |%n" +
-                " 2 | # # # # # # # # |%n" +
-                " 1 | # # # # # # # # |%n" +
-                "   +------------------+%n" +
-                "     a b c d e f g h %n" +
-                "======================");
+         "========( %turn to move )======%n" +
+                "   +-------------------+%n" +
+                " 9 | # # # # # # # # # |%n" +
+                " 8 | # # # # # # # # # |%n" +
+                " 7 | # # # # # # # # # |%n" +
+                " 6 | # # # # # # # # # |%n" +
+                " 5 | # # # # # # # # # |%n" +
+                " 4 | # # # # # # # # # |%n" +
+                " 3 | # # # # # # # # # |%n" +
+                " 2 | # # # # # # # # # |%n" +
+                " 1 | # # # # # # # # # |%n" +
+                "   +-------------------+%n" +
+                "     a b c d e f g h j %n" +
+                "========================");
     /**
      * {@inheritDoc}
      */
