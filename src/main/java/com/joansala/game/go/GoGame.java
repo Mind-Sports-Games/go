@@ -76,7 +76,7 @@ public class GoGame extends BaseGame {
     private int kopoint;
 
     /** Compensation score for white */
-    private int komi;
+    private Double komi;
 
     /** the go game size 9,13 or 19 */
     private int gameSize;
@@ -191,7 +191,7 @@ public class GoGame extends BaseGame {
     /**
      * Sets the handicap value for black.
      */
-    public void setKomiScore(int komi) {
+    public void setKomiScore(Double komi) {
         this.komi = komi;
     }
 
@@ -333,8 +333,8 @@ public class GoGame extends BaseGame {
     @Override
     public int outcome() {
         final int[] scores = computeScores();
-        final int black = scores[BLACK];
-        final int white = scores[WHITE] + komi;
+        final Double black = scores[BLACK] + 0.0;
+        final Double white = scores[WHITE] + komi;
         if (black < white) return -MAX_SCORE;
         if (black > white) return MAX_SCORE;
         return DRAW_SCORE;
@@ -343,25 +343,26 @@ public class GoGame extends BaseGame {
 
     /**
      * {@inheritDoc}
+     * Score is multiplied by 10 to remain an int
      */
     @Override
     public int score() {
         final int[] scores = computeScores();
-        return scores[BLACK] - (scores[WHITE] + komi);
+        return scores[BLACK] * 10 - (scores[WHITE] * 10 + (int) Math.round(komi * 10));
     }
 
     /**
      * {@inheritDoc}
      */
-    public int blackScore() {
+    public Double blackScore() {
         final int[] scores = computeScores();
-        return scores[BLACK];
+        return scores[BLACK] + 0.0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public int whiteScore() {
+    public Double whiteScore() {
         final int[] scores = computeScores();
         return scores[WHITE] + komi;
     }
