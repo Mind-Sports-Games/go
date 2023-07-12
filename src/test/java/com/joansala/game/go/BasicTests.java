@@ -157,17 +157,17 @@ class BasicTests {
         GoGame game  = new GoGame(19);
         GoBoard board = (GoBoard) game.getBoard();
 
-        int komi = 6;
+        Double komi = 6.5;
         GoBoard newBoard = board.toBoard(fen);
         game.setBoard(newBoard);
         game.setKomiScore(komi);
-        int whiteScore = game.whiteScore();
-        int blackScore = game.blackScore();
+        Double whiteScore = game.whiteScore();
+        Double blackScore = game.blackScore();
         int gameScore = game.score();
 
-        assertEquals(blackScore, 322);
-        assertEquals(whiteScore, 44); 
-        assertEquals(gameScore, 278);
+        assertEquals(blackScore, 322.0);
+        assertEquals(whiteScore, 44.5); 
+        assertEquals(gameScore, 2775);
     }
 
 

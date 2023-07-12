@@ -43,6 +43,6 @@ public class KomiOption extends SpinOption {
         double n = (double) value / 36100.0D;
         int score = (int) (n * game.infinity());
         service.debug("Komi score is now " + score + " (" + value + " cp)");
-        game.setKomiScore(score);
+        game.setKomiScore(score * 1.0);
     }
 }
