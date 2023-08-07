@@ -1,10 +1,8 @@
 package com.joansala.game.go;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.*;
-import com.joansala.game.go.GoGame;
-import com.joansala.game.go.GoBoard;
+
 
 class BasicTests {
 
@@ -170,6 +168,28 @@ class BasicTests {
         assertEquals(gameScore, 2775);
     }
 
+    @DisplayName("last move without passing and unmakemoves")
+    @Test
+    public void lastMoveTest(){
+        GoGame game  = new GoGame(19);
+        game.makeMove(25);
+        game.makeMove(38);
+        int lastMove = game.lastMove();
+        assertEquals(lastMove, 38);
+        
+        game.makeMove(361);
+        int lastMovePass = game.lastMove();
+        assertEquals(lastMovePass, 361);
+
+        game.unmakeMove();
+        int lastMove3 = game.lastMove();
+        assertEquals(lastMove3, 38);
+
+        game.makeMove(361);
+        game.makeMove(361);
+        int lastMove4 = game.lastMove();
+        assertEquals(lastMove4, 361);
+    }
 
 
     

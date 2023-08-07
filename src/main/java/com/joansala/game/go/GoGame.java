@@ -446,6 +446,13 @@ public class GoGame extends BaseGame {
         return NULL_MOVE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public int lastMove() {
+        int lastMove = this.move;
+        return lastMove;
+    }
 
     /**
      * Performs a move on the current position.
