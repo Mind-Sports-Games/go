@@ -1,10 +1,8 @@
 package com.joansala.game.go;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.*;
-import com.joansala.game.go.GoGame;
-import com.joansala.game.go.GoBoard;
+
 
 class BasicTests {
 
@@ -179,18 +177,18 @@ class BasicTests {
         int lastMove = game.lastMove();
         assertEquals(lastMove, 38);
         
-        game.makeMove(0);
+        game.makeMove(361);
         int lastMovePass = game.lastMove();
-        assertEquals(lastMovePass, 0);
+        assertEquals(lastMovePass, 361);
 
         game.unmakeMove();
         int lastMove3 = game.lastMove();
         assertEquals(lastMove3, 38);
 
-        game.makeMove(0);
-        game.makeMove(0);
+        game.makeMove(361);
+        game.makeMove(361);
         int lastMove4 = game.lastMove();
-        assertEquals(lastMove4, 0);
+        assertEquals(lastMove4, 361);
     }
 
 
