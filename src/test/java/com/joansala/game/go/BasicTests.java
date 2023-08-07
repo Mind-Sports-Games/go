@@ -170,6 +170,28 @@ class BasicTests {
         assertEquals(gameScore, 2775);
     }
 
+    @DisplayName("last move without passing and unmakemoves")
+    @Test
+    public void lastMoveTest(){
+        GoGame game  = new GoGame(19);
+        game.makeMove(25);
+        game.makeMove(38);
+        int lastMove = game.lastMove();
+        assertEquals(lastMove, 38);
+        
+        game.makeMove(0);
+        int lastMovePass = game.lastMove();
+        assertEquals(lastMovePass, 0);
+
+        game.unmakeMove();
+        int lastMove3 = game.lastMove();
+        assertEquals(lastMove3, 38);
+
+        game.makeMove(0);
+        game.makeMove(0);
+        int lastMove4 = game.lastMove();
+        assertEquals(lastMove4, 0);
+    }
 
 
     
