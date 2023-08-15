@@ -24,6 +24,7 @@ import com.joansala.engine.Board;
 import com.joansala.engine.base.BaseGame;
 import com.joansala.util.hash.ZobristHash;
 import com.joansala.util.bits.Bitset;
+import com.joansala.game.go.Go.Player;
 import com.joansala.game.go.attacks.Point;
 import static com.joansala.game.go.Go.*;
 
@@ -109,6 +110,7 @@ public class GoGame extends BaseGame {
     public GoGame(int capacity, int gameSize) {
         super(capacity);
         this.gameSize = gameSize;
+        this.komi = DEFAULT_KOMI_SCORE;
         this.forfeitMove = gameSize * gameSize;
         this.hasher = hashFunction(gameSize * gameSize);
         cursors = new int[capacity];
@@ -482,7 +484,7 @@ public class GoGame extends BaseGame {
                 if (chain.isInAtari()) {
                     chain.stones.forEach(i -> capture(i));
                     this.kopoint = point;
-                    captures++;
+                    captures += chain.stones.count();
                 }
             }
         }

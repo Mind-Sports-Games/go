@@ -1,6 +1,8 @@
 package com.joansala.game.go;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.*;
 
 
@@ -189,6 +191,58 @@ class BasicTests {
         game.makeMove(361);
         int lastMove4 = game.lastMove();
         assertEquals(lastMove4, 361);
+    }
+
+    @DisplayName("legal moves after a capture")
+    @Test
+    public void legalMoveAfterCaptureTest(){
+        GoGame game  = new GoGame(9);
+        int[] moves = {40, 39, 49, 41, 72, 31, 30, 48, 32, 50, 63, 58};
+        for (int move : moves){
+            game.makeMove(move);    
+        }
+        
+        game.resetCursor();
+
+        int moveCount = 0;
+        int nextMove = game.nextMove();
+        int missingMove = 49;
+        boolean foundMissingMove = false;
+        while (nextMove != -1){
+            moveCount++;
+            if (nextMove == missingMove) {foundMissingMove = true;}
+            nextMove = game.nextMove();
+        }
+        assertTrue(foundMissingMove); // specifally e6 (49) should be a valid move
+        //71 drops and pass action
+        assertEquals(moveCount, 72);
+        
+    }
+
+    @DisplayName("legal moves after a capture with ko point")
+    @Test
+    public void legalMoveAfterCaptureTestWithKoPoint(){
+        GoGame game  = new GoGame(9);
+        int[] moves = {41, 40, 49, 48, 39, 50, 72, 58, 31, 80, 49};
+        for (int move : moves){
+            game.makeMove(move);    
+        }
+        
+        game.resetCursor();
+
+        int moveCount = 0;
+        int nextMove = game.nextMove();
+        int illegalKoMove = 40;
+        boolean noIllegalKoMove = true;
+        while (nextMove != -1){
+            moveCount++;
+            if (nextMove == illegalKoMove) {noIllegalKoMove = false;}
+            nextMove = game.nextMove();
+        }
+        assertTrue(noIllegalKoMove); // specifally e5 (40) should not be a valid move
+        //71 drops and pass action
+        assertEquals(moveCount, 72);
+        
     }
 
 

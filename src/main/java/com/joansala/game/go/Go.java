@@ -40,6 +40,9 @@ final class Go {
     /** Default game size, producing a square shape */
     static final int DEFAULT_GAME_SIZE = 19;
 
+    /** Default komi 6.5 is for all games all sizes */
+    static final Double DEFAULT_KOMI_SCORE = 6.5;
+
     // -------------------------------------------------------------------
     // Board representation
     // -------------------------------------------------------------------
