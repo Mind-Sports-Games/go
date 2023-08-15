@@ -482,7 +482,7 @@ public class GoGame extends BaseGame {
                 if (chain.isInAtari()) {
                     chain.stones.forEach(i -> capture(i));
                     this.kopoint = point;
-                    captures++;
+                    captures += chain.stones.count();
                 }
             }
         }
