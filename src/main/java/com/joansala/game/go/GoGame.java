@@ -298,7 +298,7 @@ public class GoGame extends BaseGame {
      *
      * @return      If a repetition occurred
      */
-    private boolean isRepetition() {
+    public boolean isRepetition() {
         for (int n = index; n >= 0; n--) {
             if (moves[n] != forfeitMove) {
                 if (hashes[n] == this.hash) {
@@ -334,6 +334,7 @@ public class GoGame extends BaseGame {
      */
     @Override
     public int outcome() {
+        if (isRepetition() && !isForfeit(lastMove())) return DRAW_SCORE;
         final int[] scores = computeScores();
         final Double black = scores[BLACK] + 0.0;
         final Double white = scores[WHITE] + komi;
