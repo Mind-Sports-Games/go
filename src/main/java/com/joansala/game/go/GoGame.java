@@ -121,6 +121,81 @@ public class GoGame extends BaseGame {
     }
 
 
+    private GoGame(
+        int capacity,
+        int index,
+        int turn,
+        int move,
+        int[] moves,
+        long hash,
+        ZobristHash hasher,
+        GoBoard board,
+        Player player,
+        Player rival,
+        int[] cursors,
+        int[] kopoints,
+        long[] hashes,
+        long[] states,
+        Bitset[] state,
+        int cursor,
+        int kopoint,
+        Double komi,
+        int gameSize,
+        int forfeitMove
+    ) {
+        //BASEGAME
+        this.capacity = capacity;
+        this.index = index;
+        this.turn = turn;
+        this.move = move;
+        this.moves = Arrays.copyOf(moves, moves.length);
+        this.hash = hash;
+        //GOGAME
+        this.hasher = hasher;
+        //this.hasher = hashFunction(gameSize * gameSize);
+        this.board = new GoBoard(board.position(), turn, kopoint, gameSize);
+        this.player = player;
+        this.rival = rival;
+        this.cursors = Arrays.copyOf(cursors, cursors.length);
+        this.kopoints = Arrays.copyOf(kopoints, kopoints.length);
+        this.hashes = Arrays.copyOf(hashes, hashes.length);
+        this.states = Arrays.copyOf(states, states.length);
+        this.state = new Bitset[state.length];
+        for (int i=0; i < state.length; i++){
+            this.state[i] = state[i].clone();
+        }
+        this.cursor = cursor;
+        this.kopoint = kopoint;
+        this.komi = komi;
+        this.gameSize = gameSize;
+        this.forfeitMove = forfeitMove;
+    }
+
+    public GoGame deepCopy() {
+        return new GoGame(
+            this.capacity,
+            this.index,
+            this.turn,
+            this.move,
+            this.moves,
+            this.hash,
+            this.hasher,
+            this.board,
+            this.player,
+            this.rival,
+            this.cursors,
+            this.kopoints,
+            this.hashes,
+            this.states,
+            this.state,
+            this.cursor,
+            this.kopoint,
+            this.komi,
+            this.gameSize,
+            this.forfeitMove
+        );
+    }
+
     /**
      * {@inheritDoc}
      */
