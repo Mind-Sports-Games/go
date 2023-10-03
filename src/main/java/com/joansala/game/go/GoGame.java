@@ -546,6 +546,7 @@ public class GoGame extends BaseGame {
         // Player forfeits the turn
 
         if (move == forfeitMove) {
+            this.kopoint = NULL_MOVE;
             return;
         }
 
