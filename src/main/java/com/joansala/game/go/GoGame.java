@@ -291,7 +291,7 @@ public class GoGame extends BaseGame {
             return true;
         }
 
-        if (isKoPoint(move) || !isEmptyPoint(move)) {
+        if ((isKoPoint(move) && forecastCaptureCountOfMove(move) == 1) || !isEmptyPoint(move)) {
             return false;
         }
 
@@ -367,6 +367,21 @@ public class GoGame extends BaseGame {
         return true;
     }
 
+    private int forecastCaptureCountOfMove(int move) {
+        if (isSuicide(player.color, move)) return 0;
+        int captures = 0;
+
+        for (int point : Point.attacks(this.gameSize, move)) {
+            if (state[rival.color].contains(point)) {
+                Chain chain = chain(rival.color, point);
+
+                if (chain.isInAtari()) {
+                    captures += chain.stones.count();
+                }
+            }
+        }
+        return captures;
+    }
 
     /**
      * Checks if the same state occurred before.

@@ -245,6 +245,58 @@ class BasicTests {
         
     }
 
+    @DisplayName("(Issue#489) Go game without a ko point after pass")
+    @Test
+    public void noKoPointAfterPass(){
+        GoGame game  = new GoGame(19);
+        int[] moves = {2, 59, 20, 39, 22, 41, 40, 21, 361};
+        for (int move : moves){
+            game.makeMove(move);    
+        }
+        
+        game.resetCursor();
+
+        int moveCount = 0;
+        int nextMove = game.nextMove();
+        int legalKoMove = 40;
+        boolean foundKoMove = false;
+        while (nextMove != -1){
+            moveCount++;
+            if (nextMove == legalKoMove) {foundKoMove = true;}
+            nextMove = game.nextMove();
+        }
+        assertTrue(foundKoMove); // specifally e5 (40) should be a valid move
+        //354 drops and pass action
+        assertEquals(moveCount, 355);
+        
+    }
+
+    @DisplayName("(Issue#490) Go game with a recapture of more than one stone after ko point")
+    @Test
+    public void multipleCaptureAfterKoPoint(){
+        GoGame game  = new GoGame(9);
+        int[] moves = {40, 49, 48, 58, 57, 76, 67, 68, 59, 66, 50, 81, 67, 49, 81, 58};
+        for (int move : moves){
+            game.makeMove(move);    
+        }
+        
+        game.resetCursor();
+
+        int moveCount = 0;
+        int nextMove = game.nextMove();
+        int legalKoMove = 67;
+        boolean foundKoMove = false;
+        while (nextMove != -1){
+            moveCount++;
+            if (nextMove == legalKoMove) {foundKoMove = true;}
+            nextMove = game.nextMove();
+        }
+        assertTrue(foundKoMove); // specifally e5 (40) should be a valid move
+        //71 drops and pass action
+        assertEquals(moveCount, 72);
+        
+    }
+
 
     
 }
