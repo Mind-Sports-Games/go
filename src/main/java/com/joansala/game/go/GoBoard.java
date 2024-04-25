@@ -90,7 +90,7 @@ public class GoBoard extends BaseBoard<Bitset[]> {
                 break;
             default:
                 algebraic = new CoordinateConverter(COORDINATES_19);
-                bitset = new BitsetConverter(BITS_19); 
+                bitset = new BitsetConverter(BITS_19);
         }
     }
 
@@ -192,7 +192,7 @@ public class GoBoard extends BaseBoard<Bitset[]> {
     /**
      * Bidimensional array of piece identifiers from bitboards.
      */
-    private int[][] toOccupants(Bitset[] position) {
+    public int[][] toOccupants(Bitset[] position) {
         int[][] occupants = new int[this.gameSize][this.gameSize];
         return bitset.toOccupants(occupants, position);
     }
@@ -313,7 +313,7 @@ public class GoBoard extends BaseBoard<Bitset[]> {
         "   +---------------------------------------+%n" +
         "     a b c d e f g h j k l m n o p q r s t %n" +
         "============================================");
-        
+
     private static String boardString13 = (
         "===========( %turn to move )========%n" +
             "   +---------------------------+%n" +
