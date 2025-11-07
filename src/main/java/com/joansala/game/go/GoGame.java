@@ -389,6 +389,9 @@ public class GoGame extends BaseGame {
      * @return      If a repetition occurred
      */
     public boolean isRepetition() {
+        if (lastMove() == forfeitMove) {
+            return false;
+        }
         for (int n = index; n >= 0; n--) {
             if (moves[n] != forfeitMove) {
                 if (hashes[n] == this.hash) {
