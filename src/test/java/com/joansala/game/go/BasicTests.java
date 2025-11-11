@@ -297,6 +297,16 @@ class BasicTests {
         
     }
 
+    @DisplayName("not repetition on a pass")
+    @Test
+    public void notRepetitionOnPassTest(){
+        GoGame game  = new GoGame(9);
+        int[] moves = {80, 71, 79, 70, 69, 62, 77, 78, 79, 53, 80, 78, 79, 81};
+        for (int move : moves){
+            game.makeMove(move);
+        }
 
+        assertTrue(!game.isRepetition());
+    }
     
 }
